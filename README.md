@@ -1,16 +1,37 @@
-# flutter_spotify_clone
+# Flutter Spotify Clone
 
-A new Flutter project.
+A minimalist Spotify-like music player built with Flutter and BLoC pattern.
+
+## Features
+
+- Browse and search for songs
+- Play, pause, and stop songs
+- Skip to next or previous track
+- Seek within a song
+- Mini-player at the bottom of the home screen
+- Full-screen player with album art and controls
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Prerequisites
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter SDK (version 2.0 or later)
+- Dart SDK (version 2.12 or later)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Project Structure
+```
+- `lib/`
+  - `bloc/` - BLoC (Business Logic Component) classes
+  - `models/` - Data models
+  - `repositories/` - Data handling and API communication
+  - `screens/` - UI screens
+  - `widgets/` - Reusable UI components
+  - `main.dart` - Entry point of the application
+```
+## Dependencies
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [flutter_bloc](https://pub.dev/packages/flutter_bloc) - State management
+- [just_audio](https://pub.dev/packages/just_audio) - Audio playback
+- [equatable](https://pub.dev/packages/equatable) - Value equality
+
+
