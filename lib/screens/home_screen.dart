@@ -41,6 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _searchSongs(String query) async {
+    if (query.isEmpty) {
+      _loadSongs(); // Load all songs if query is empty
+      return;
+    }
+
     setState(() {
       isLoading = true;
       searchQuery = query;
@@ -181,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 context
                                     .read<AudioPlayerBloc>()
                                     .add(PauseSong());
-                              } else if (state is AudioPlayerPaused) {
+                              } else {
                                 context
                                     .read<AudioPlayerBloc>()
                                     .add(ResumeSong());
@@ -244,12 +249,43 @@ class SongSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    searchSongs(query);
-    return Container();
+    return FutureBuilder<List<Song>>(
+      future: SongRepository().searchSongs(query),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No songs found'));
+        } else {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              return SongListItem(
+                song: snapshot.data![index],
+                onTap: () {
+                  context
+                      .read<AudioPlayerBloc>()
+                      .add(PlaySong(snapshot.data![index], snapshot.data!));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PlayerScreen()),
+                  );
+                },
+              );
+            },
+          );
+        }
+      },
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Container();
+    if (query.length < 2) {
+      return Center(child: Text('Type at least 2 characters to search'));
+    }
+    return buildResults(context);
   }
 }

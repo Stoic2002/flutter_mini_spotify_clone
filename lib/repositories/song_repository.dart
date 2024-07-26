@@ -11,21 +11,35 @@ class SongRepository {
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
+
       return jsonResponse.map((song) => Song.fromJson(song)).toList();
     } else {
       throw Exception('Failed to load songs');
     }
   }
 
+  // Future<List<Song>> searchSongs(String query) async {
+  //   final response =
+  //       await http.get(Uri.parse('$baseUrl/songs/search?q=$query'));
+
+  //   if (response.statusCode == 200) {
+  //     List jsonResponse = json.decode(response.body);
+  //     return jsonResponse.map((song) => Song.fromJson(song)).toList();
+  //   } else {
+  //     throw Exception('Failed to search songs');
+  //   }
+  // }
+
   Future<List<Song>> searchSongs(String query) async {
+    final encodedQuery = Uri.encodeComponent(query);
     final response =
-        await http.get(Uri.parse('$baseUrl/songs/search?q=$query'));
+        await http.get(Uri.parse('$baseUrl/songs/search?q=$encodedQuery'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse.map((song) => Song.fromJson(song)).toList();
     } else {
-      throw Exception('Failed to search songs');
+      throw Exception('Failed to search songs: ${response.statusCode}');
     }
   }
 }

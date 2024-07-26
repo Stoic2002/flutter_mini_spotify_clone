@@ -6,7 +6,14 @@ import '../models/song.dart';
 class PlayerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
+    return BlocConsumer<AudioPlayerBloc, AudioPlayerState>(
+      listener: (context, state) {
+        if (state is AudioPlayerError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
+      },
       builder: (context, state) {
         if (state is AudioPlayerLoading) {
           return Scaffold(
@@ -60,19 +67,27 @@ class PlayerScreen extends StatelessWidget {
                     '${_formatDuration(position)} / ${_formatDuration(duration)}',
                     style: TextStyle(fontSize: 14),
                   ),
+                  SizedBox(
+                    height: 40,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.skip_previous),
+                        icon: Icon(
+                          Icons.skip_previous,
+                          size: 35,
+                        ),
                         onPressed: () {
                           context.read<AudioPlayerBloc>().add(SkipToPrevious());
                         },
                       ),
                       IconButton(
-                        icon: Icon(state is AudioPlayerPlaying
-                            ? Icons.pause
-                            : Icons.play_arrow),
+                        icon: Icon(
+                            state is AudioPlayerPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow,
+                            size: 35),
                         onPressed: () {
                           if (state is AudioPlayerPlaying) {
                             context.read<AudioPlayerBloc>().add(PauseSong());
@@ -82,7 +97,24 @@ class PlayerScreen extends StatelessWidget {
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.skip_next),
+                        icon: Icon(
+                          Icons.stop,
+                          size: 35,
+                        ),
+                        onPressed: () {
+                          context.read<AudioPlayerBloc>().add(StopSong());
+                          // Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => HomeScreen()));
+                          Navigator.pop(context);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.skip_next,
+                          size: 35,
+                        ),
                         onPressed: () {
                           context.read<AudioPlayerBloc>().add(SkipToNext());
                         },

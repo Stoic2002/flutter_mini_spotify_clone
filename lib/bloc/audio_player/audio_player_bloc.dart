@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_spotify_clone/models/song.dart';
 import 'package:just_audio/just_audio.dart';
-
 part 'audio_player_event.dart';
 part 'audio_player_state.dart';
 
@@ -20,24 +19,15 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
     on<SeekTo>(_onSeekTo);
     on<SkipToPrevious>(_onSkipToPrevious);
     on<SkipToNext>(_onSkipToNext);
-
-    audioPlayer.playerStateStream.listen((playerState) {
-      if (playerState.playing) {
-        add(UpdateProgress(
-            audioPlayer.position, audioPlayer.duration ?? Duration.zero));
-      }
-    });
   }
 
   void _onPlaySong(PlaySong event, Emitter<AudioPlayerState> emit) async {
     emit(AudioPlayerLoading());
     try {
-      playlist = event.playlist ?? [event.song];
-      currentIndex = event.playlist?.indexOf(event.song) ?? 0;
-      await audioPlayer.setUrl(event.song.audioUrl);
-      await audioPlayer.play();
+      playlist = event.playlist;
+      currentIndex = event.playlist.indexOf(event.song);
 
-      await audioPlayer.playingStream.firstWhere((playing) => playing == true);
+      await audioPlayer.setUrl(event.song.audioUrl);
 
       emit(AudioPlayerPlaying(
           event.song, Duration.zero, audioPlayer.duration ?? Duration.zero));
@@ -45,6 +35,8 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
       audioPlayer.positionStream.listen((position) {
         add(UpdateProgress(position, audioPlayer.duration ?? Duration.zero));
       });
+
+      await audioPlayer.play();
     } catch (e) {
       emit(AudioPlayerError('Failed to play song: ${e.toString()}'));
     }
@@ -53,18 +45,20 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
   void _onPauseSong(PauseSong event, Emitter<AudioPlayerState> emit) async {
     if (audioPlayer.playing && state is AudioPlayerPlaying) {
       final currentState = state as AudioPlayerPlaying;
-      await audioPlayer.pause();
+
       emit(AudioPlayerPaused(
           currentState.song, currentState.position, currentState.duration));
+      await audioPlayer.pause();
     }
   }
 
   void _onResumeSong(ResumeSong event, Emitter<AudioPlayerState> emit) async {
     if (state is AudioPlayerPaused) {
       final currentState = state as AudioPlayerPaused;
-      await audioPlayer.play();
+
       emit(AudioPlayerPlaying(
           currentState.song, currentState.position, currentState.duration));
+      await audioPlayer.play();
     }
   }
 

@@ -10,8 +10,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AudioPlayerBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AudioPlayerBloc()),
+      ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Mini Spotify Clone',
