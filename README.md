@@ -33,5 +33,6 @@ A minimalist Spotify-like music player built with Flutter and BLoC pattern.
 - [flutter_bloc](https://pub.dev/packages/flutter_bloc) - State management
 - [just_audio](https://pub.dev/packages/just_audio) - Audio playback
 - [equatable](https://pub.dev/packages/equatable) - Value equality
-
+- [cached_network_image]
+- [http] - API
 

@@ -40,6 +40,9 @@ dependencies:
   http:
   just_audio:
   cached_network_image:
+  audio_service:
+  just_audio_background:
+  rxdart:
 
 dev_dependencies:
   flutter_test:
