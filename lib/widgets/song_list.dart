@@ -28,6 +28,7 @@ class SongList extends StatelessWidget {
             // Cari indeks lagu yang diklik dalam antrian
             final queueIndex = audioHandler.queue.value
                 .indexWhere((item) => item.id == song.audioUrl);
+            onTap(song);
 
             if (queueIndex != -1) {
               // Jika lagu ditemukan dalam antrian, putar lagu tersebut
@@ -40,7 +41,6 @@ class SongList extends StatelessWidget {
             }
 
             audioHandler.play();
-            onTap(song);
           },
         );
       },

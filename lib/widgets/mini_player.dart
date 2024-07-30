@@ -5,14 +5,6 @@ import '../main.dart';
 import 'player_controls.dart';
 
 class MiniPlayer extends StatelessWidget {
-  String _formatDuration(Duration? duration) {
-    if (duration == null) return '--:--';
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$twoDigitMinutes:$twoDigitSeconds';
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<MediaItem?>(
@@ -27,60 +19,71 @@ class MiniPlayer extends StatelessWidget {
               MaterialPageRoute(builder: (context) => PlayerPage()),
             );
           },
-          child: Container(
-            height: 70,
-            color: Colors.grey[200],
-            child: Row(
-              children: [
-                Image.network(
-                  mediaItem.artUri.toString(),
-                  width: 70,
-                  height: 70,
-                  fit: BoxFit.cover,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          mediaItem.title,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          mediaItem.artist ?? '',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        StreamBuilder<Duration>(
-                          stream: AudioService.position,
-                          builder: (context, snapshot) {
-                            final position = snapshot.data ?? Duration.zero;
-                            return Text(
-                              '${_formatDuration(position)} / ${_formatDuration(mediaItem.duration)}',
-                              style: TextStyle(fontSize: 12),
-                            );
-                          },
-                        ),
-                      ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Durasi line
+              StreamBuilder<Duration>(
+                stream: AudioService.position,
+                builder: (context, snapshot) {
+                  final position = snapshot.data ?? Duration.zero;
+                  final duration = mediaItem.duration ?? Duration.zero;
+                  return LinearProgressIndicator(
+                    value: duration.inMilliseconds > 0
+                        ? position.inMilliseconds / duration.inMilliseconds
+                        : 0.0,
+                    backgroundColor: Colors.grey[300],
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
+                    minHeight: 3, // Atur ketebalan garis sesuai kebutuhan
+                  );
+                },
+              ),
+              Container(
+                height: 70,
+                color: Colors.grey[200],
+                child: Row(
+                  children: [
+                    Image.network(
+                      mediaItem.artUri.toString(),
+                      width: 70,
+                      height: 70,
+                      fit: BoxFit.cover,
                     ),
-                  ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              mediaItem.title,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              mediaItem.artist ?? '',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.skip_previous),
+                      onPressed: audioHandler.skipToPrevious,
+                    ),
+                    PlayerControls(),
+                    IconButton(
+                      icon: Icon(Icons.skip_next),
+                      onPressed: audioHandler.skipToNext,
+                    ),
+                  ],
                 ),
-                IconButton(
-                  icon: Icon(Icons.skip_previous),
-                  onPressed: audioHandler.skipToPrevious,
-                ),
-                PlayerControls(),
-                IconButton(
-                  icon: Icon(Icons.skip_next),
-                  onPressed: audioHandler.skipToNext,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

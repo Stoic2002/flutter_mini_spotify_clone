@@ -1,16 +1,18 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spotify_clone/bloc/connectivity/connectivity_bloc.dart';
 
 import 'package:flutter_spotify_clone/bloc/song/song_bloc.dart';
 import 'package:flutter_spotify_clone/repositories/song_repository.dart';
 import 'package:flutter_spotify_clone/services/audio_handler.dart';
 
 import 'package:flutter_spotify_clone/screens/home_screen.dart';
-// import 'screens/home_screen.dart';
+import 'package:flutter_spotify_clone/services/connectivity_service.dart';
 
 late AudioHandler audioHandler;
 final SongRepository _songRepository = SongRepository();
+final ConnectivityService connectivityService = ConnectivityService();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +35,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => SongBloc(_songRepository))],
+      providers: [
+        BlocProvider(create: (context) => SongBloc(_songRepository)),
+        BlocProvider(create: (context) => ConnectivityBloc(connectivityService))
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Mini Spotify Clone',

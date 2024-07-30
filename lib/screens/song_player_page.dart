@@ -100,18 +100,6 @@ class _PlayerPageState extends State<PlayerPage> {
                     PlayerControls(),
                     SizedBox(width: 20),
                     IconButton(
-                      icon: Icon(Icons.stop),
-                      iconSize: 40,
-                      onPressed: () {
-                        audioHandler.stop;
-
-                        Navigator.pop(context);
-                      },
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
                       icon: Icon(Icons.skip_next),
                       iconSize: 40,
                       onPressed: audioHandler.skipToNext,
