@@ -14,15 +14,9 @@ A minimalist Spotify-like music player built with Flutter and BLoC pattern.
 
 ## App Preview
 
-<img src="assets/images/playlist.png" alt="screenshot" width="200"/>
+<img src="assets/images/playlist.png" alt="screenshot" width="200"/> <img src="assets/images/song_player.png" alt="screenshot" width="200"/> <img src="assets/images/playback_player.png" alt="screenshot" width="200"/>
+<img src="assets/images/search_song.png" alt="screenshot" width="200"/> <img src="assets/images/search_found_song.png" alt="screenshot" width="200"/>
 
-<img src="assets/images/song_player.png" alt="screenshot" width="200"/>
-
-<img src="assets/images/playback_player.png" alt="screenshot" width="200"/>
-
-<img src="assets/images/search_song.png" alt="screenshot" width="200"/> 
-
-<img src="assets/images/search_found_song.png" alt="screenshot" width="200"/>
 
 
 
