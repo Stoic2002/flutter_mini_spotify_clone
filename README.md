@@ -10,29 +10,16 @@ A minimalist Spotify-like music player built with Flutter and BLoC pattern.
 - Seek within a song
 - Mini-player at the bottom of the home screen
 - Full-screen player with album art and controls
+- Playback song and notification
 
-## Getting Started
+## App Preview
 
-### Prerequisites
+[](assets/images/playlist.png) [](assets/images/song_player.png) [](assets/images/playback_player.png)
+[](assets/images/search_song.png) [](assets/images/search_found_song.png)
 
-- Flutter SDK (version 2.0 or later)
-- Dart SDK (version 2.12 or later)
 
-## Project Structure
-```
-- `lib/`
-  - `bloc/` - BLoC (Business Logic Component) classes
-  - `models/` - Data models
-  - `repositories/` - Data handling and API communication
-  - `screens/` - UI screens
-  - `widgets/` - Reusable UI components
-  - `main.dart` - Entry point of the application
-```
-## Dependencies
 
-- [flutter_bloc](https://pub.dev/packages/flutter_bloc) - State management
-- [just_audio](https://pub.dev/packages/just_audio) - Audio playback
-- [equatable](https://pub.dev/packages/equatable) - Value equality
-- [cached_network_image]
-- [http] - API
+
+
+
 

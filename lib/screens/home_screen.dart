@@ -32,13 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: SongSearchDelegate(songRepo),
+                delegate: SongSearchDelegate(),
               );
             },
           ),
         ],
       ),
-      body: Expanded(
+      body: Container(
         child: BlocBuilder<SongBloc, SongState>(
           builder: (context, state) {
             if (state is SongLoading) {
