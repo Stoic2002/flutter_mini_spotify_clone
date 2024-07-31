@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spotify_clone/bloc/song/song_bloc.dart';
 import 'package:flutter_spotify_clone/main.dart';
-import 'package:flutter_spotify_clone/screens/song_player_page.dart';
 import '../models/song.dart';
 
 class SongSearchDelegate extends SearchDelegate<Song?> {

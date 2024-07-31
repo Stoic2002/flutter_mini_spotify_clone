@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/song.dart';
 
 class SongRepository {
-  final String baseUrl = 'https://c2f8-36-73-33-38.ngrok-free.app/api';
+  final String baseUrl = 'https://9b4d-36-73-33-38.ngrok-free.app/api';
 
   Future<List<Song>> fetchSongs() async {
     final response = await http.get(Uri.parse('$baseUrl/songs'));

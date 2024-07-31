@@ -15,7 +15,9 @@ class SongList extends StatelessWidget {
       itemBuilder: (context, index) {
         final song = songs[index];
         return ListTile(
-          leading: Image.network(song.albumArt),
+          leading: song.albumArt.isEmpty
+              ? CircularProgressIndicator()
+              : Image.network(song.albumArt),
           title: Text(song.title),
           subtitle: Text(song.artist),
           onTap: () async {
